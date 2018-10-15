@@ -8,6 +8,6 @@
  *
  * @author no
  */
-public class KniffelTableModel {
+public class KnifelTableRenderer {
 
 }

@@ -211,7 +211,14 @@ public class KniffelGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void taPointsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taPointsMousePressed
-
+        int row = taPoints.getSelectedRow();
+        int col = taPoints.getSelectedColumn();
+        
+        if(col == 1){   
+            KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
+            kr.getWahl().setSelected(!kr.getWahl().isSelected());
+            taPoints.repaint();
+        }             
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed

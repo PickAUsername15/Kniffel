@@ -20,7 +20,7 @@ public class KniffelGUI extends javax.swing.JFrame {
      * Creates new form KniffelGUI
      */
     private String[] spiel = {"NurEinser", "NurZweier", "NurDreier", "NurVieer", "NurFuenfer", "NurSechser", "Pasch3", "Pasch4", "FullHouse", "StrasseKlein", "StrasseGross", "Kniffel"};
-
+    private int wuerfelCounter = 3;
     private KniffelTableModel karte = new KniffelTableModel();
     private DiceTableModel wuerfel = new DiceTableModel();
 
@@ -39,7 +39,6 @@ public class KniffelGUI extends javax.swing.JFrame {
             Logger.getLogger(KniffelGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
         wuerfel.setStartNumbers();
         taWuerfel.setModel(wuerfel);
         taWuerfel.setRowHeight(64);
@@ -206,17 +205,13 @@ public class KniffelGUI extends javax.swing.JFrame {
                         .addComponent(onPlayDice, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(taWuerfel, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(taWuerfel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
                 .addComponent(taWuerfel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(onPlayDice)
                 .addGap(1, 1, 1)
                 .addComponent(jLabel1)
@@ -234,13 +229,21 @@ public class KniffelGUI extends javax.swing.JFrame {
 
         if (col == 1) {
             KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
-            kr.getWahl().setSelected(!kr.getWahl().isSelected());
+            kr.getWahl().setSelected(true);
             taPoints.repaint();
+            wuerfelCounter = 3;
+            onPlayDice.setEnabled(true);
         }
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed
-        wuerfel.initNumbers();
+        if (wuerfelCounter > 0) {
+            wuerfel.initNumbers();
+            wuerfelCounter--;
+        }
+        if (wuerfelCounter == 0) {
+            onPlayDice.setEnabled(false);
+        }
     }//GEN-LAST:event_onPlayDiceActionPerformed
 
     /**

@@ -34,6 +34,10 @@ public class KniffelRow {
     public JCheckBox getWahl() {
         return wahl;
     }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
     
     
     

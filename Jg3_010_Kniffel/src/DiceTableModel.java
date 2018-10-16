@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
 public class DiceTableModel extends AbstractTableModel {
 
     private ArrayList<Icon> pics = new ArrayList<>();
-    private int[] numbers = new int[5];
+    private static int[] numbers = new int[5];
     private static boolean[] selected = new boolean[5];
 
     public void addPics() throws MalformedURLException {
@@ -53,6 +53,9 @@ public class DiceTableModel extends AbstractTableModel {
     }
     public static boolean getSelected(int idx) {
         return selected[idx];
+    }
+    public static int[] getSelected() {
+        return numbers;
     }
 
     @Override

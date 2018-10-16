@@ -230,9 +230,15 @@ public class KniffelGUI extends javax.swing.JFrame {
         if (col == 1) {
             KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
             kr.getWahl().setSelected(true);
-            taPoints.repaint();
+
             wuerfelCounter = 3;
             onPlayDice.setEnabled(true);
+
+            KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
+            int points = bl.getPoints();
+            System.out.println(points);
+            karte.setValueAt(points, row, 2);
+            taPoints.repaint();
         }
     }//GEN-LAST:event_taPointsMousePressed
 

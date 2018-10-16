@@ -45,4 +45,12 @@ public class KniffelTableModel extends AbstractTableModel {
         return rows.get(rowIndex);
     }
 
+    @Override
+    public void setValueAt(Object points, int rowIndex, int columnIndex) {
+        rows.get(rowIndex).setPoints(Integer.parseInt(points+""));
+        fireTableDataChanged();
+    }
+    
+    
+
 }

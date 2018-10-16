@@ -27,12 +27,19 @@ public class DiceTableModel extends AbstractTableModel {
         }
     }
 
+    void setStartNumbers() {
+        for (int i = 0; i < 5; i++) {
+            numbers.add(i);
+        }
+        fireTableDataChanged();
+    }
+
     public void initNumbers() {
         Random r = new Random();
         for (int i = 0; i < 5; i++) {
-            numbers.add(r.nextInt(5) + 1);
+            numbers.set(i,r.nextInt(5) + 1);
         }
-
+        fireTableDataChanged();
     }
 
     @Override

@@ -1,12 +1,15 @@
 
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JTable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Dominik Roth
@@ -19,16 +22,27 @@ public class KniffelGUI extends javax.swing.JFrame {
     private String[] spiel = {"NurEinser", "NurZweier", "NurDreier", "NurVieer", "NurFuenfer", "NurSechser", "Pasch3", "Pasch4", "FullHouse", "StrasseKlein", "StrasseGross", "Kniffel"};
 
     private KniffelTableModel karte = new KniffelTableModel();
+    private DiceTableModel wuerfel = new DiceTableModel();
 
     public KniffelGUI() {
         initComponents();
         for (String s : spiel) {
             karte.add(new KniffelRow(s, new JCheckBox(), 0));
         }
- 
-       taPoints.setModel(karte);
-        
+
+        taPoints.setModel(karte);
         taPoints.setDefaultRenderer(Object.class, new KniffelTableRenderer());
+
+        try {
+            wuerfel.addPics();
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(KniffelGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        taWuerfel.setModel(wuerfel);
+        taWuerfel.setRowHeight(64);
+        taWuerfel.setDefaultRenderer(Object.class, new DiceTableRenderer());
+
     }
 
     /**
@@ -40,8 +54,6 @@ public class KniffelGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        taWuerfel = new javax.swing.JTable();
         onPlayDice = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -57,21 +69,9 @@ public class KniffelGUI extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         tfPoints = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        taWuerfel = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        taWuerfel.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(taWuerfel);
 
         onPlayDice.setText("würfeln");
         onPlayDice.addActionListener(new java.awt.event.ActionListener() {
@@ -128,10 +128,9 @@ public class KniffelGUI extends javax.swing.JFrame {
                 .addGap(82, 82, 82)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tfTopSum, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(tfTopBon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                        .addComponent(tfPoints, javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(tfBotSum, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addComponent(tfTopBon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                    .addComponent(tfPoints, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tfBotSum, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -179,26 +178,43 @@ public class KniffelGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Gewinnkarte");
 
+        taWuerfel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        taWuerfel.setColumnSelectionAllowed(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
-                            .addComponent(onPlayDice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(onPlayDice, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(taWuerfel, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(38, 38, 38)
+                .addComponent(taWuerfel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
                 .addComponent(onPlayDice)
                 .addGap(1, 1, 1)
                 .addComponent(jLabel1)
@@ -213,12 +229,12 @@ public class KniffelGUI extends javax.swing.JFrame {
     private void taPointsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taPointsMousePressed
         int row = taPoints.getSelectedRow();
         int col = taPoints.getSelectedColumn();
-        
-        if(col == 1){   
+
+        if (col == 1) {
             KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
             kr.getWahl().setSelected(!kr.getWahl().isSelected());
             taPoints.repaint();
-        }             
+        }
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed
@@ -269,7 +285,6 @@ public class KniffelGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton onPlayDice;
     private javax.swing.JTable taPoints;

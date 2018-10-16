@@ -21,9 +21,14 @@ public class DiceTableRenderer implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         JLabel l = new JLabel();
         l.setOpaque(true);
+        if (!DiceTableModel.getSelected(column)) {
+            l.setBackground(Color.red);
+        }
         if (isSelected) {
             l.setBackground(Color.red);
-        }l.setIcon((ImageIcon) value);
+            DiceTableModel.setSelected(column, false);
+        }
+        l.setIcon((ImageIcon) value);
         return l;
     }
 

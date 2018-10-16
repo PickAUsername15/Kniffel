@@ -1,6 +1,8 @@
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -18,7 +20,8 @@ import javax.swing.table.AbstractTableModel;
 public class DiceTableModel extends AbstractTableModel {
 
     private ArrayList<Icon> pics = new ArrayList<>();
-    private ArrayList<Integer> numbers = new ArrayList<>();
+    private int[] numbers = new int[5];
+    private static boolean[] selected = new boolean[5];
 
     public void addPics() throws MalformedURLException {
         for (int i = 0; i < 6; i++) {
@@ -29,7 +32,8 @@ public class DiceTableModel extends AbstractTableModel {
 
     void setStartNumbers() {
         for (int i = 0; i < 5; i++) {
-            numbers.add(i);
+            numbers[i] = i + 1;
+            selected[i] = true;
         }
         fireTableDataChanged();
     }
@@ -37,9 +41,18 @@ public class DiceTableModel extends AbstractTableModel {
     public void initNumbers() {
         Random r = new Random();
         for (int i = 0; i < 5; i++) {
-            numbers.set(i,r.nextInt(5) + 1);
+            if (selected[i]) {
+                numbers[i] = r.nextInt(5) + 1;
+            }
         }
         fireTableDataChanged();
+    }
+
+    public static void setSelected(int idx, boolean b) {
+        selected[idx] = b;
+    }
+    public static boolean getSelected(int idx) {
+        return selected[idx];
     }
 
     @Override
@@ -49,7 +62,7 @@ public class DiceTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return numbers.size();
+        return numbers.length;
     }
 
     @Override
@@ -57,19 +70,19 @@ public class DiceTableModel extends AbstractTableModel {
         Object b = null;
         switch (columnIndex) {
             case 0:
-                b = pics.get(numbers.get(columnIndex));
+                b = pics.get(numbers[columnIndex]);
                 break;
             case 1:
-                b = pics.get(numbers.get(columnIndex));
+                b = pics.get(numbers[columnIndex]);
                 break;
             case 2:
-                b = pics.get(numbers.get(columnIndex));
+                b = pics.get(numbers[columnIndex]);
                 break;
             case 3:
-                b = pics.get(numbers.get(columnIndex));
+                b = pics.get(numbers[columnIndex]);
                 break;
             case 4:
-                b = pics.get(numbers.get(columnIndex));
+                b = pics.get(numbers[columnIndex]);
                 break;
         }
         return b;

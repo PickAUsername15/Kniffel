@@ -50,7 +50,7 @@ public class DiceTableModel extends AbstractTableModel {
 
     public void resetSelection(){
         for (int i = 0; i < selected.length; i++) {
-            selected[i] = false;
+            selected[i] = true;
         }
     }
     

@@ -46,7 +46,6 @@ public class KniffelGUI extends javax.swing.JFrame {
         taWuerfel.setRowHeight(64);
         taWuerfel.setDefaultRenderer(Object.class, new DiceTableRenderer());
 
-        
     }
 
     /**
@@ -237,11 +236,12 @@ public class KniffelGUI extends javax.swing.JFrame {
 
                 wuerfelCounter = 3;
                 onPlayDice.setEnabled(true);
-
+                taWuerfel.getSelectionModel().clearSelection();
                 KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
                 int points = bl.getPoints();
                 karte.setValueAt(points, row, 2);
                 wuerfel.resetSelection();
+                taWuerfel.setEnabled(false);
                 taPoints.repaint();
 
             }
@@ -251,6 +251,8 @@ public class KniffelGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed
+
+        taWuerfel.setEnabled(true);
         if (wuerfelCounter > 0) {
             wuerfel.initNumbers();
             wuerfelCounter--;

@@ -35,6 +35,7 @@ public class KniffelTableModel extends AbstractTableModel {
         return cols.length;
     }
 
+    
     @Override
     public String getColumnName(int column) {
         return cols[column];

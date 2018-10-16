@@ -48,6 +48,12 @@ public class DiceTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void resetSelection(){
+        for (int i = 0; i < selected.length; i++) {
+            selected[i] = false;
+        }
+    }
+    
     public static void setSelected(int idx, boolean b) {
         selected[idx] = b;
     }

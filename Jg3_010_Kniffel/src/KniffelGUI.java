@@ -3,6 +3,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /*
@@ -23,6 +24,7 @@ public class KniffelGUI extends javax.swing.JFrame {
     private int wuerfelCounter = 3;
     private KniffelTableModel karte = new KniffelTableModel();
     private DiceTableModel wuerfel = new DiceTableModel();
+    private boolean diced = false;
 
     public KniffelGUI() {
         initComponents();
@@ -44,6 +46,7 @@ public class KniffelGUI extends javax.swing.JFrame {
         taWuerfel.setRowHeight(64);
         taWuerfel.setDefaultRenderer(Object.class, new DiceTableRenderer());
 
+        
     }
 
     /**
@@ -226,19 +229,24 @@ public class KniffelGUI extends javax.swing.JFrame {
     private void taPointsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taPointsMousePressed
         int row = taPoints.getSelectedRow();
         int col = taPoints.getSelectedColumn();
+        if (diced) {
+            if (col == 1) {
+                diced = false;
+                KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
+                kr.getWahl().setSelected(true);
 
-        if (col == 1) {
-            KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
-            kr.getWahl().setSelected(true);
+                wuerfelCounter = 3;
+                onPlayDice.setEnabled(true);
 
-            wuerfelCounter = 3;
-            onPlayDice.setEnabled(true);
+                KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
+                int points = bl.getPoints();
+                karte.setValueAt(points, row, 2);
+                wuerfel.resetSelection();
+                taPoints.repaint();
 
-            KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
-            int points = bl.getPoints();
-            System.out.println(points);
-            karte.setValueAt(points, row, 2);
-            taPoints.repaint();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Nicht gewürfelt!", "Error", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_taPointsMousePressed
 
@@ -246,6 +254,7 @@ public class KniffelGUI extends javax.swing.JFrame {
         if (wuerfelCounter > 0) {
             wuerfel.initNumbers();
             wuerfelCounter--;
+            diced = true;
         }
         if (wuerfelCounter == 0) {
             onPlayDice.setEnabled(false);

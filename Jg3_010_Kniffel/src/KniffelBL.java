@@ -47,10 +47,10 @@ public class KniffelBL {
                 fullHouse();
                 break;
             case 9:
-                aufeinanderfolgen(4);
+                strasse(4);
                 break;
             case 10:
-                aufeinanderfolgen(5);
+                strasse(5);
                 break;
             case 11:
                 kniffle();
@@ -106,7 +106,7 @@ public class KniffelBL {
         }
     }
 
-    public void aufeinanderfolgen(int art) {
+    public void strasse(int art) {
 
         int[] sort = numbers;
 

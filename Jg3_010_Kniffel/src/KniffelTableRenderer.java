@@ -25,7 +25,6 @@ public class KniffelTableRenderer implements TableCellRenderer {
             KniffelRow v = (KniffelRow) value;
             switch (column) {
                 case 0:
-
                     l = new JLabel(v.getSpiel());
                     break;
                 case 1:
@@ -36,7 +35,13 @@ public class KniffelTableRenderer implements TableCellRenderer {
                     break;
             }
             l.setOpaque(true);
-            l.setBackground(table.getBackground());
+            if(row % 2 == 0){
+                l.setBackground(Color.LIGHT_GRAY);
+            }else{
+                l.setBackground(Color.white);
+                
+            }
+
         }
         return l;
     }

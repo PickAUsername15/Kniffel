@@ -42,6 +42,7 @@ public class KniffelGUI extends javax.swing.JFrame {
         }
 
         wuerfel.setStartNumbers();
+        taWuerfel.setEnabled(false);
         taWuerfel.setModel(wuerfel);
         taWuerfel.setRowHeight(64);
         taWuerfel.setDefaultRenderer(Object.class, new DiceTableRenderer());
@@ -110,11 +111,23 @@ public class KniffelGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Obere Summe:");
 
+        tfTopSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfTopSum.setText("0");
+
         jLabel5.setText("Obere Bonus:");
+
+        tfTopBon.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfTopBon.setText("0");
 
         jLabel7.setText("Untere Summe:");
 
+        tfBotSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfBotSum.setText("0");
+
         jLabel9.setText("Gesamt-Punkte:");
+
+        tfPoints.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfPoints.setText("0");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -230,20 +243,49 @@ public class KniffelGUI extends javax.swing.JFrame {
         int col = taPoints.getSelectedColumn();
         if (diced) {
             if (col == 1) {
-                diced = false;
                 KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
-                kr.getWahl().setSelected(true);
+                if (!kr.getWahl().isSelected() && !karte.isAllSelected()) {
 
-                wuerfelCounter = 3;
-                onPlayDice.setEnabled(true);
-                taWuerfel.getSelectionModel().clearSelection();
-                KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
-                int points = bl.getPoints();
-                karte.setValueAt(points, row, 2);
-                wuerfel.resetSelection();
-                taWuerfel.setEnabled(false);
-                taPoints.repaint();
+                    kr.getWahl().setSelected(true);
 
+                    diced = false;
+                    wuerfelCounter = 3;
+                    onPlayDice.setEnabled(true);
+                    taWuerfel.getSelectionModel().clearSelection();
+                    KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
+                    int points = bl.getPoints();
+                    karte.setValueAt(points, row, 2);
+                    wuerfel.resetSelection();
+                    taWuerfel.setEnabled(false);
+                    taPoints.repaint();
+
+                    int topSum = 0;
+                    for (int i = 0; i < 6; i++) {
+                        KniffelRow kniffel = (KniffelRow) karte.getValueAt(i, 3);
+                        topSum += kniffel.getPoints();
+                    }
+                    tfTopSum.setText(topSum + "");
+                    int bonus = 0;
+                    if (topSum >= 63) {
+                        bonus = 35;
+                        tfTopBon.setText("35");
+                    }
+                    int botSum = 0;
+                    for (int i = 6; i < 12; i++) {
+                        KniffelRow kniffel = (KniffelRow) karte.getValueAt(i, 3);
+                        botSum += kniffel.getPoints();
+                    }
+                    tfBotSum.setText(botSum + "");
+
+                    int gesamtPoints = topSum + bonus + botSum;
+
+                    tfPoints.setText(gesamtPoints + "");
+                    if (karte.isAllSelected()) {
+                        JOptionPane.showMessageDialog(this, "Finished", "End", JOptionPane.PLAIN_MESSAGE);
+
+                        onPlayDice.setEnabled(false);
+                    }
+                }
             }
         } else {
             JOptionPane.showMessageDialog(this, "Nicht gewürfelt!", "Error", JOptionPane.PLAIN_MESSAGE);
@@ -251,15 +293,20 @@ public class KniffelGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed
+        if (!karte.isAllSelected()) {
+            int row = taPoints.getSelectedRow();
 
-        taWuerfel.setEnabled(true);
-        if (wuerfelCounter > 0) {
-            wuerfel.initNumbers();
-            wuerfelCounter--;
-            diced = true;
-        }
-        if (wuerfelCounter == 0) {
-            onPlayDice.setEnabled(false);
+            int col = taPoints.getSelectedColumn();
+            taWuerfel.setEnabled(true);
+            if (wuerfelCounter > 0) {
+                wuerfel.initNumbers();
+                wuerfelCounter--;
+                diced = true;
+            }
+
+            if (wuerfelCounter == 0) {
+                onPlayDice.setEnabled(false);
+            }
         }
     }//GEN-LAST:event_onPlayDiceActionPerformed
 

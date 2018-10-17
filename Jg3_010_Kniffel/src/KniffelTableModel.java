@@ -35,7 +35,18 @@ public class KniffelTableModel extends AbstractTableModel {
         return cols.length;
     }
 
-    
+    public boolean isAllSelected(){
+        int c = 0;
+        for (KniffelRow row : rows) {
+            if(row.getWahl().isSelected()){
+                c++;
+            }
+        }
+        if(c == 12){
+            return true;
+        }
+        return false;
+    }
     @Override
     public String getColumnName(int column) {
         return cols[column];

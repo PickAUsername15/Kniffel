@@ -20,30 +20,28 @@ public class KniffelTableRenderer implements TableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        JComponent l = new JLabel();
+        JComponent component = new JLabel();
         if (value instanceof KniffelRow) {
             KniffelRow v = (KniffelRow) value;
             switch (column) {
                 case 0:
-                    l = new JLabel(v.getSpiel());
+                    component = new JLabel(v.getSpiel());
                     break;
                 case 1:
-                    l = (JCheckBox) v.getWahl();
+                    component = (JCheckBox) v.getWahl();
                     break;
                 case 2:
-                    l = new JLabel(String.valueOf(v.getPoints()));
+                    component = new JLabel(String.valueOf(v.getPoints()));
                     break;
             }
-            l.setOpaque(true);
-            if(row % 2 == 0){
-                l.setBackground(Color.LIGHT_GRAY);
-            }else{
-                l.setBackground(Color.white);
-                
+            component.setOpaque(true);
+            if (row % 2 == 0) {
+                component.setBackground(Color.LIGHT_GRAY);
+            } else {
+                component.setBackground(Color.white);
             }
-
         }
-        return l;
+        return component;
     }
 
 }

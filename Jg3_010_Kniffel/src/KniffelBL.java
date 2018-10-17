@@ -58,29 +58,29 @@ public class KniffelBL {
         }
     }
 
-    private void count(int number) {
-        for (int n : numbers) {
-            if (n == number - 1) {
-                points += number;
+    private void count(int type) {
+        for (int number : numbers) {
+            if (number == type - 1) {
+                points += type;
             }
         }
     }
 
-    public void pasch(int art) {
+    public void pasch(int type) {
         Map<Integer, Integer> map = new HashMap<>();
 
         for (int key : numbers) {
             if (map.containsKey(key)) {
-                int c = map.get(key);
-                c++;
-                map.put(key, c);
+                int counter = map.get(key);
+                counter++;
+                map.put(key, counter);
             } else {
                 map.put(key, 1);
             }
         }
         for (Integer key : map.keySet()) {
-            if (map.get(key) >= art) {
-                points = (key + 1) * art;
+            if (map.get(key) >= type) {
+                points = (key + 1) * type;
             }
         }
     }
@@ -90,9 +90,9 @@ public class KniffelBL {
 
         for (int key : numbers) {
             if (map.containsKey(key)) {
-                int c = map.get(key);
-                c++;
-                map.put(key, c);
+                int counter = map.get(key);
+                counter++;
+                map.put(key, counter);
             } else {
                 map.put(key, 1);
             }
@@ -106,30 +106,30 @@ public class KniffelBL {
         }
     }
 
-    public void strasse(int art) {
+    public void strasse(int type) {
 
-        int[] sort = numbers;
+        int[] sortedNumbers = numbers;
 
-        for (int i = 1; i < sort.length; i++) {
-            for (int j = 0; j < sort.length - i; j++) {
-                if (sort[j] > sort[j + 1]) {
-                    int temp = sort[j];
-                    sort[j] = sort[j + 1];
-                    sort[j + 1] = temp;
+        for (int i = 1; i < sortedNumbers.length; i++) {
+            for (int j = 0; j < sortedNumbers.length - i; j++) {
+                if (sortedNumbers[j] > sortedNumbers[j + 1]) {
+                    int temp = sortedNumbers[j];
+                    sortedNumbers[j] = sortedNumbers[j + 1];
+                    sortedNumbers[j + 1] = temp;
                 }
             }
         }
-        int c = 0;
-        for (int i = 0; i < sort.length - 1; i++) {
+        int counter = 0;
+        for (int i = 0; i < sortedNumbers.length - 1; i++) {
 
-            if (sort[i] + 1 == sort[i + 1]) {
-                c++;
+            if (sortedNumbers[i] + 1 == sortedNumbers[i + 1]) {
+                counter++;
             }
         }
 
-        if (c == 4 && art == 5) {
+        if (counter == 4 && type == 5) {
             points = 40;
-        } else if (c == 3 && art == 4) {
+        } else if (counter == 3 && type == 4) {
             points = 30;
         }
     }
@@ -139,9 +139,9 @@ public class KniffelBL {
 
         for (int key : numbers) {
             if (map.containsKey(key)) {
-                int c = map.get(key);
-                c++;
-                map.put(key, c);
+                int counter = map.get(key);
+                counter++;
+                map.put(key, counter);
             } else {
                 map.put(key, 1);
             }

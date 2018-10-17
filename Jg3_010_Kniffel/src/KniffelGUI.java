@@ -13,39 +13,40 @@ import javax.swing.JTable;
  */
 /**
  *
- * @author Dominik Roth
+ * @author no
  */
 public class KniffelGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form KniffelGUI
      */
-    private String[] spiel = {"NurEinser", "NurZweier", "NurDreier", "NurVieer", "NurFuenfer", "NurSechser", "Pasch3", "Pasch4", "FullHouse", "StrasseKlein", "StrasseGross", "Kniffel"};
-    private int wuerfelCounter = 3;
-    private KniffelTableModel karte = new KniffelTableModel();
-    private DiceTableModel wuerfel = new DiceTableModel();
+    private String[] category = {"NurEinser", "NurZweier", "NurDreier", "NurVieer", "NurFuenfer", "NurSechser", "Pasch3", "Pasch4", "FullHouse", "StrasseKlein", "StrasseGross", "Kniffel"};
+    private int diceCounter = 3;
+    private KniffelTableModel map = new KniffelTableModel();
+    private DiceTableModel dice = new DiceTableModel();
     private boolean diced = false;
+    private boolean finished = false;
 
     public KniffelGUI() {
+        this.setResizable(false);
         initComponents();
-        for (String s : spiel) {
-            karte.add(new KniffelRow(s, new JCheckBox(), 0));
+        for (String s : category) {
+            map.add(new KniffelRow(s, new JCheckBox(), 0));
         }
 
-        taPoints.setModel(karte);
+        taPoints.setModel(map);
         taPoints.setDefaultRenderer(Object.class, new KniffelTableRenderer());
-
+        taPoints.getTableHeader().setReorderingAllowed(false);
         try {
-            wuerfel.addPics();
+            dice.addPics();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(KniffelGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        wuerfel.setStartNumbers();
-        taWuerfel.setEnabled(false);
-        taWuerfel.setModel(wuerfel);
-        taWuerfel.setRowHeight(64);
-        taWuerfel.setDefaultRenderer(Object.class, new DiceTableRenderer());
+        dice.setStartNumbers();
+        taDice.setEnabled(false);
+        taDice.setModel(dice);
+        taDice.setRowHeight(64);
+        taDice.setDefaultRenderer(Object.class, new DiceTableRenderer());
 
     }
 
@@ -67,15 +68,16 @@ public class KniffelGUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         tfTopSum = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        tfTopBon = new javax.swing.JTextField();
+        tfBon = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         tfBotSum = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         tfPoints = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        taWuerfel = new javax.swing.JTable();
+        taDice = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         onPlayDice.setText("würfeln");
         onPlayDice.addActionListener(new java.awt.event.ActionListener() {
@@ -116,8 +118,8 @@ public class KniffelGUI extends javax.swing.JFrame {
 
         jLabel5.setText("Obere Bonus:");
 
-        tfTopBon.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        tfTopBon.setText("0");
+        tfBon.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        tfBon.setText("0");
 
         jLabel7.setText("Untere Summe:");
 
@@ -144,7 +146,7 @@ public class KniffelGUI extends javax.swing.JFrame {
                 .addGap(82, 82, 82)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tfTopSum, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                    .addComponent(tfTopBon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                    .addComponent(tfBon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                     .addComponent(tfPoints, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(tfBotSum, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
@@ -158,7 +160,7 @@ public class KniffelGUI extends javax.swing.JFrame {
                     .addComponent(tfTopSum, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfTopBon, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfBon, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfBotSum, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,7 +196,7 @@ public class KniffelGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Gewinnkarte");
 
-        taWuerfel.setModel(new javax.swing.table.DefaultTableModel(
+        taDice.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -205,7 +207,7 @@ public class KniffelGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        taWuerfel.setColumnSelectionAllowed(true);
+        taDice.setColumnSelectionAllowed(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,12 +222,12 @@ public class KniffelGUI extends javax.swing.JFrame {
                         .addComponent(onPlayDice, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addContainerGap(23, Short.MAX_VALUE))
-            .addComponent(taWuerfel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(taDice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(taWuerfel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(taDice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(onPlayDice)
                 .addGap(1, 1, 1)
@@ -241,74 +243,76 @@ public class KniffelGUI extends javax.swing.JFrame {
     private void taPointsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taPointsMousePressed
         int row = taPoints.getSelectedRow();
         int col = taPoints.getSelectedColumn();
-        if (diced) {
-            if (col == 1) {
-                KniffelRow kr = (KniffelRow) karte.getValueAt(row, col);
-                if (!kr.getWahl().isSelected() && !karte.isAllSelected()) {
+        if (diced && col == 1) {
+            KniffelRow kr = (KniffelRow) map.getValueAt(row, col);
+            if (!kr.getWahl().isSelected() && !map.isAllSelected()) {
+                kr.getWahl().setSelected(true);
+                diced = false;
 
-                    kr.getWahl().setSelected(true);
+                diceCounter = 3;
 
-                    diced = false;
-                    wuerfelCounter = 3;
-                    onPlayDice.setEnabled(true);
-                    taWuerfel.getSelectionModel().clearSelection();
-                    KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
-                    int points = bl.getPoints();
-                    karte.setValueAt(points, row, 2);
-                    wuerfel.resetSelection();
-                    taWuerfel.setEnabled(false);
-                    taPoints.repaint();
+                onPlayDice.setEnabled(true);
+                taDice.getSelectionModel().clearSelection();
 
-                    int topSum = 0;
-                    for (int i = 0; i < 6; i++) {
-                        KniffelRow kniffel = (KniffelRow) karte.getValueAt(i, 3);
-                        topSum += kniffel.getPoints();
-                    }
-                    tfTopSum.setText(topSum + "");
-                    int bonus = 0;
-                    if (topSum >= 63) {
-                        bonus = 35;
-                        tfTopBon.setText("35");
-                    }
-                    int botSum = 0;
-                    for (int i = 6; i < 12; i++) {
-                        KniffelRow kniffel = (KniffelRow) karte.getValueAt(i, 3);
-                        botSum += kniffel.getPoints();
-                    }
-                    tfBotSum.setText(botSum + "");
+                KniffelBL bl = new KniffelBL(row, DiceTableModel.getSelected());
+                int points = bl.getPoints();
+                map.setValueAt(points, row, 2);
 
-                    int gesamtPoints = topSum + bonus + botSum;
+                dice.resetSelection();
+                taDice.setEnabled(false);
+                calculatePoints();
+                taPoints.repaint();
 
-                    tfPoints.setText(gesamtPoints + "");
-                    if (karte.isAllSelected()) {
-                        JOptionPane.showMessageDialog(this, "Finished", "End", JOptionPane.PLAIN_MESSAGE);
-
-                        onPlayDice.setEnabled(false);
-                    }
+                if (map.isAllSelected()) {
+                    finished = true;
+                    JOptionPane.showMessageDialog(this, "Finished", "End", JOptionPane.PLAIN_MESSAGE);
+                    onPlayDice.setEnabled(false);
                 }
             }
-        } else {
+        } else if (!finished) {
             JOptionPane.showMessageDialog(this, "Nicht gewürfelt!", "Error", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_taPointsMousePressed
 
     private void onPlayDiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onPlayDiceActionPerformed
-        if (!karte.isAllSelected()) {
-            int row = taPoints.getSelectedRow();
-
-            int col = taPoints.getSelectedColumn();
-            taWuerfel.setEnabled(true);
-            if (wuerfelCounter > 0) {
-                wuerfel.initNumbers();
-                wuerfelCounter--;
+        if (!map.isAllSelected()) {
+            taDice.setEnabled(true);
+            if (diceCounter > 0) {
+                dice.setRandomNumbers();
+                diceCounter--;
                 diced = true;
             }
 
-            if (wuerfelCounter == 0) {
+            if (diceCounter == 0) {
                 onPlayDice.setEnabled(false);
             }
         }
     }//GEN-LAST:event_onPlayDiceActionPerformed
+
+    public void calculatePoints() {
+        int topSum = 0;
+        for (int i = 0; i < 6; i++) {
+            KniffelRow kniffel = (KniffelRow) map.getValueAt(i, 3);
+            topSum += kniffel.getPoints();
+        }
+        tfTopSum.setText(topSum + "");
+
+        int bonus = 0;
+        if (topSum >= 63) {
+            bonus = 35;
+            tfBon.setText("35");
+        }
+
+        int botSum = 0;
+        for (int i = 6; i < 12; i++) {
+            KniffelRow kniffel = (KniffelRow) map.getValueAt(i, 3);
+            botSum += kniffel.getPoints();
+        }
+        tfBotSum.setText(botSum + "");
+
+        int gesamtPoints = topSum + bonus + botSum;
+        tfPoints.setText(gesamtPoints + "");
+    }
 
     /**
      * @param args the command line arguments
@@ -324,16 +328,24 @@ public class KniffelGUI extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(KniffelGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KniffelGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(KniffelGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KniffelGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(KniffelGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KniffelGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(KniffelGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(KniffelGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -356,11 +368,11 @@ public class KniffelGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton onPlayDice;
+    private javax.swing.JTable taDice;
     private javax.swing.JTable taPoints;
-    private javax.swing.JTable taWuerfel;
+    private javax.swing.JTextField tfBon;
     private javax.swing.JTextField tfBotSum;
     private javax.swing.JTextField tfPoints;
-    private javax.swing.JTextField tfTopBon;
     private javax.swing.JTextField tfTopSum;
     // End of variables declaration//GEN-END:variables
 }
